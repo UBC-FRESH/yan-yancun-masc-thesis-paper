@@ -1,0 +1,24 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.spl
+*.pdf
+!3d.pdf
+!area_distribution_managed.pdf
+!area_distribution_unmanaged.pdf
+!emission_mh.pdf
+!emission_nh.pdf
+!framework.pdf
+!hs_mh.pdf
+!leading_species_structure_managed.pdf
+!leading_species_structure_unmanaged.pdf
+!maximize_harvest_stock_total.pdf
+!no_harvest_stock_total.pdf
+!no_harvest_stock_total_greg.pdf
+!stock_emission.pdf
+!study area.pdf
+!tradoff_curves_me.pdf
+!xyz.pdf
