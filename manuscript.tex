@@ -139,8 +139,9 @@ Results showed that the model pushed towards either no harvesting (100\% retenti
 
 %%Research highlights
 \begin{highlights}
-\item Research highlight 1
-\item Research highlight 2
+\item A carbon-yield-curve framework integrates libCBM carbon with a forest estate LP.
+\item Optimal harvest is highly sensitive to HWP half-life and displacement assumptions.
+\item Low displacement keeps harvest near zero; high values drive it to the maximum.
 \end{highlights}
 
 \begin{keyword}
@@ -255,12 +256,12 @@ After selecting the \ac{PG}-\ac{TSA} as the \ac{AOI} for this study, the relevan
 \subsubsection{Yield Curves}
 Two sets of yield curves were needed for this study: timber yield curves and carbon yield curves. The timber yield curves had been previously created in from \citep{boisvenue2022managing} study. The yield curves used were divided into two groups. \Ac{VDYP} model generated the timber yield curves for previously unmanaged stands and \ac{TIPSY} program for the generation of timber yield curves managed stands. Managed vs unmanaged stands were separated based on previous regeneration practices. If the stand had been previously harvested and planted it was considered managed and if the stand was not planted and natural regeneration was allowed to occur the stand was considered unmanged. Timber yield curves were projected for a 350-year planning horizon. All \acp{AU} were assigned a starting yield curve and a transition curve that gets applied after harvest occurred. 
 
-Carbon yield curves were created following \citep{neilson2008optimal}, integrating carbon into the \ac{SFMM} alongside the timber yield curves. Forest carbon was modelled with libCBM, the open-source implementation of \ac{CBM-CFS3} \citep{KURZ2009480}, across 21 carbon pools (10 biomass and 11 \ac{DOM}) and 52 carbon fluxes. For each analysis unit, a one-hectare stand was simulated on its natural trajectory to the model's typical harvest age (120 years; the area-weighted median harvest age measured under the even-flow scenarios), at which point a clearcut harvest event transferred the carbon pools according to CBM's disturbance matrix (merchantable carbon removed; slash and dead roots transferred to the \ac{DOM} pools), and the stand regrew on its managed yield curve. Repeating the harvest at the rotation age until the \ac{DOM} pools reached their cycle equilibrium, and extracting the post-harvest trajectory, yielded the managed carbon yield curves; the natural curves are the no-management trajectories. The projections were aggregated into biomass, merchantable, \ac{DOM} and ecosystem stock curves and one net emission flux curve. This structure allows for carbon to be integrated in the \ac{SFMM} similar to the integration of timber yield curves. Aggregating the carbon curves and fluxes allowed for computational efficiency and sufficient carbon yield accuracy for simulation and optimization. Additionally, this method leaves space for more detailed or additional carbon pools and fluxes to be added in later studies. 
+Carbon yield curves were created following \citep{neilson2008optimal}, integrating carbon into the \ac{SFMM} alongside the timber yield curves. Forest carbon was modelled with libCBM, the open-source implementation of \ac{CBM-CFS3} \citep{KURZ2009480}, across 21 carbon pools (10 biomass and 11 \ac{DOM}) and 52 carbon fluxes. For each analysis unit, a one-hectare stand was simulated on its natural trajectory to the model's typical harvest age (120 years; the area-weighted median harvest age measured under the even-flow scenarios), at which point a clearcut harvest event transferred the carbon pools according to CBM's disturbance matrix (merchantable carbon removed; slash and dead roots transferred to the \ac{DOM} pools), and the stand regrew on its managed yield curve. Repeating the harvest at the rotation age until the \ac{DOM} pools reached their cycle equilibrium, and extracting the post-harvest trajectory, yielded the managed carbon yield curves; the natural curves are the no-management trajectories. The projections were aggregated into biomass, merchantable, \ac{DOM} and ecosystem stock curves and one net emission flux curve. This structure allows for carbon to be integrated in the \ac{SFMM} similar to the integration of timber yield curves. Aggregating the carbon curves and fluxes allowed for computational efficiency and sufficient carbon yield accuracy for simulation and optimization. The curves are registered in \ac{ws3} with its default piecewise-linear simplification (relative tolerance $10^{-2}$), which keeps the total curve sums within about 1.4\% of the generated values; the same registered curves are used for both the optimization and the emission reporting, so the carbon accounting remains internally consistent. Additionally, this method leaves space for more detailed or additional carbon pools and fluxes to be added in later studies. 
 
-Dead organic matter initialization in \ac{CBM} is known to produce upward-biased initial pools: the initialization procedure applies stand-replacing disturbances at regular intervals equal to the fire return interval rather than the stochastic disturbance regime, which over-accumulates carbon relative to the landscape's carbon-holding capacity \citep{boisvenue2022managing}, and initialization choices are a documented source of variation and systematic error in carbon models \citep{metsaranta2017, oberpriller2021}. Because a post-harvest reset to the initialized state would inherit this bias, the managed curves in this study are generated by simulating the harvest itself, so that post-harvest carbon states are conservation-consistent with the harvested stand's pre-harvest state; the residual difference between first-rotation and steady-state harvest histories is about 1\% of landscape carbon. 
+Dead organic matter initialization in CBM is known to produce upward-biased initial pools: the initialization procedure applies stand-replacing disturbances at regular intervals equal to the fire return interval rather than the stochastic disturbance regime, which over-accumulates carbon relative to the landscape's carbon-holding capacity \citep{boisvenue2022managing}, and initialization choices are a documented source of variation and systematic error in carbon models \citep{metsaranta2017, oberpriller2021}. Because a post-harvest reset to the initialized state would inherit this bias, the managed curves in this study are generated by simulating the harvest itself, so that post-harvest carbon states are conservation-consistent with the harvested stand's pre-harvest state; the residual difference between first-rotation and steady-state harvest histories remains small across the tested scenarios (up to about 1.6\% of landscape carbon in the most extreme case). 
 
 \subsubsection{HWP Data}
-This study assumed an 85\% utilization amount of harvested wood \citep{smyth2020climate}. The utilized fiber was divided into two equal categories of \acp{HWP}: paper and solid wood products \citep{ipcc2019refinement}. This division of \acp{HWP} was determined based off of historical data on log availability and utilization in \ac{BC} \cite{BC_Mill_List_2020}  An average wood density ($0.46 \, \text{ton/m}^3$) was adopted from \citep{kennedy1965strength}, along with a conversion factor of 0.5 tC per 1 t of dry wood to estimate carbon content \citep{penman2003good}. 
+This study assumed an 85\% utilization amount of harvested wood \citep{smyth2020climate}. The utilized fiber was divided into two equal categories of \acp{HWP}: paper and solid wood products \citep{ipcc2019refinement}. This division of \acp{HWP} was determined based off of historical data on log availability and utilization in \ac{BC} \cite{BC_Mill_List_2020}  The carbon content of the harvested wood is taken directly from the libCBM merchantable-carbon yield curves rather than from a separate volume--density conversion, so that the product-pool inflows are consistent with the ecosystem carbon ledger. 
 \Ac{LCA} data  required to parameterize the \ac{WPCM}, including \ac{HWP} half-lives and displacement factors, were obtained from \citep{smyth2020climate}. The half-life of paper products was assumed to be 2 years, while that of solid wood products was assumed to be 30 years \citep{eggleston2006ipcc}. These values were used to derive the annual decay constants for first-order decay \citep{eggleston2006ipcc}. According to previous literature, the default displacement factor is 2.2 tC/tC for solid wood products and 0 tC/tC for paper products \cite{smyth2020climate}. 
 
 \subsubsection{The Sustainable Forest Management Model}
@@ -332,7 +333,7 @@ C_{\text{p,t}} = a_{\text{p}}C_t^{\text{wood}}
 \end{equation}
 
 \begin{equation}
-C_t^{\text{wood}} = \rho^{\text{wood}} V_t C^{\text{content}}
+C_t^{\text{wood}} = u \, M_t
 \label{eq:10}
 \end{equation}
 
@@ -345,18 +346,17 @@ where,
 
 \begin{align*}
     P &:= \text{Set of products} \\
-    V_t &:= \text{Volume of harvested wood in period $t \in T$ (m}^3\text{)} \\
-    \rho^{\text{wood}} &:= \text{Wood density (ton/m}^3\text{)} \\
-    C^{\text{content}} &:= \text{Carbon content of the wood} \\
-    C^{\text{wood}} &:= \text{Carbon stock of harvested wood (ton)} \\
-    C_{\text{p,t}} &:= \text{Carbon stock of product $p \in P$ in time period $t \in T$ (ton)} \\
+    M_t &:= \text{Merchantable carbon of the stands harvested in period $t \in T$ (tC), taken directly from the libCBM carbon yield curves} \\
+    u &:= \text{Utilization rate of harvested wood (0.85)} \\
+    C^{\text{wood}} &:= \text{Carbon stock of harvested wood entering the product pools (tC)} \\
+    C_{\text{p,t}} &:= \text{Carbon stock of product $p \in P$ in time period $t \in T$ (tC)} \\
     a_{\text{p}} &:= \text{Allocation factor for product $p \in P$}
 \end{align*}
 
-Once a \ac{HWP} enters its life cycle, the \ac{IPCC} first-order decay model \citep{eggleston2006ipcc} is applied to calculate changes in the \ac{HWP} carbon stocks over time  (Eq. \ref{eq:12}). The half-life of each product is then used to determine the corresponding annual decay constants in the first-order decay model (Eq. \ref{eq:13}).
+Once a \ac{HWP} enters its life cycle, the \ac{IPCC} first-order decay model \citep{eggleston2006ipcc} is applied to calculate changes in the \ac{HWP} carbon stocks over time  (Eq. \ref{eq:12}). The half-life of each product is then used to determine the corresponding annual decay constant (Eq. \ref{eq:13}), and the ten-year survival factor, $e^{-10 k_{\text{p}}} = 2^{-10/hl_{\text{p}}}$, is applied directly to each product pool.
 
 \begin{equation}
-C_{\text{p,t+1}} = C_{\text{p, t}}(1 - k_{\text{p}})^{10}
+C_{\text{p,t+1}} = C_{\text{p, t}} \, e^{-10 k_{\text{p}}}
 \label{eq:12}
 \end{equation}
 
@@ -400,24 +400,24 @@ In this study, \acp{HWP}carbon emissions, $E_t^{\text{hwp}}$, are calculated fro
 E_{t+1}^{\text{hwp}} = \frac{44}{12}(C_{t+1}^{\text{hwp}}- C_t^{\text{hwp}})
 \label{eq:16}
 \end{equation}
-The substitution effect of\acp{HWP}, $S_t^{\text{hwp}}$, is calculated using their displacement factors (Eqs. \ref{eq:17} and \ref{eq:18}). 
+The substitution effect of \acp{HWP}, $S_t^{\text{hwp}}$, is calculated from the carbon inflow into each product pool using their displacement factors (Eqs. \ref{eq:17} and \ref{eq:18}); displacement applies to the solid-wood inflow, while the paper displacement factor is zero. 
 \begin{equation}
 S_t^{\text{hwp}} = \sum_{p \in P}S_{\text{p,t}}
 \label{eq:17}
 \end{equation}
 
 \begin{equation}
-S_{\text{p,t}} = C_{\text{p,t}}df_{\text{p}}
+S_{\text{p,t}} = a_{\text{p}}C_t^{\text{wood}}df_{\text{p}}
 \label{eq:18}
 \end{equation}
 where, 
 \begin{align*}
-    S_{\text{p,t}} &:= \text{Substitution effect for product $p \in P$ in period $t \in T$} \\
+    S_{\text{p,t}} &:= \text{Substitution effect of the period-}t\text{ inflow to product } p \in P \\
     df_{\text{p}} &:= \text{Displacement factor for product $p \in P$ } \end{align*}
 
 \subsection{Model Execution}
 \label{sec: Model Execution}
-For the simulations and optimizations in this study, a 200-year time horizon (beginning in 2020) was adopted and divided into 20 periods of 10 years each. In each optimization problem, the even-flow constraints were applied to both harvest volume and harvest area, restricting their variation between consecutive periods to less than 5\%.
+For the simulations and optimizations in this study, a 200-year time horizon (beginning in 2020) was adopted and divided into 20 periods of 10 years each. In each optimization problem, the even-flow constraints were applied to both harvest volume and harvest area, restricting their variation between consecutive periods to less than 5\%. Harvest volume refers to the utilized volume (merchantable volume multiplied by the 85\% utilization rate) throughout this study.
 
 \subsubsection{Carbon Stocks}
 Unlike conventional carbon accounting approaches, this study approximates forest carbon stocks and emissions and integrates them with the optimization model. Thus, it is necessary to evaluate and compare the model outputs directly to the forest carbon budget model results. This was done through creating two landscape-level tests that applied no-harvest and max-harvest constraints, allowing for direct comparison of the carbon outputs from the new proposed model to the reference model libcmb.
@@ -467,7 +467,7 @@ The age structure and area distribution of unmanaged and managed forests in \ac{
 \label{sec: Model performance}
 The \ac{SFMM} developed allows for users to set various objectives. 
 \subsection{Maximize Harvest Volume}
-When harvesting volume is maximized, harvest area ranges from 369000 to 408000 $ha/period$ and harvest volume ranges from  $7.45\times10^7$ $m^3/period$ and $8.23\times10^7$ $m^3/period$. Growing stock ($m^3$) decreases  from x to x. 
+When harvesting volume is maximized, harvest area ranges from 369,000 to 408,000 $ha/period$ and harvest volume ranges from $7.45\times10^7$ to $8.24\times10^7$ $m^3/period$. Growing stock decreases from $7.21 \times 10^8$ to $4.68 \times 10^8$ $m^3$. 
 
 
 \begin{figure}
@@ -477,27 +477,23 @@ When harvesting volume is maximized, harvest area ranges from 369000 to 408000 $
     \label{fig: area_vol_stock}
 \end{figure}
 
-\subsection{Maximize Total Forest System Carbon Stock}
-\subsection{Minimize Net Forest Carbon Emissions}
-Results for these two sections haven't been reported. Will follow the same reporting structure as before. 
-
 \subsection{Carbon Stocks}
 \subsubsection{No Harvest}
-In the no-harvest scenario, the initial total carbon stored three carbon stocks from \ac{ws3} and libcbm are presented in table \ref{tab:No harvest emissions} . These values are also represented graphically in \ref{fig: nh_stock} , showing the deviations between the two models through time. The \ac{DOM} carbon stock shows a slow increase across the planning horizon and only a slight variation between the two models from period 2 through 11. However, all differences were under 2\% and deemed negligible and with standard model variability.. The biomass carbon stock exhibited a faster growth in the first 8 periods followed by a slight decline through to the end of the planning horizon. The initial values of the biomass carbon stock were slightly different between \ac{ws3} and libcbm with ws3 being $+$ $0.029 \times 10^{9}$ (7.1\%). This difference is less than 1\% at period 10.  Of note is that the variations between the models is minor and the overall pattern of carbon accumulation in the ecosystems is the same. 
+In the no-harvest scenario, the initial total carbon stored three carbon stocks from \ac{ws3} and libcbm are presented in table \ref{tab:No harvest emissions} . These values are also represented graphically in \ref{fig: nh_stock} , showing the deviations between the two models through time. The \ac{DOM} carbon stock shows a slow increase across the planning horizon, with differences between the two models remaining under 2\% in all periods (mean 1.2\%) and deemed negligible and within standard model variability. The biomass carbon stock exhibited a faster growth in the first 8 periods followed by a slight decline through to the end of the planning horizon. The initial values of the biomass carbon stock were slightly different between \ac{ws3} and libcbm with ws3 being $+$ $0.029 \times 10^{9}$ tC (7.3\%). This difference is less than 1\% at period 10.  Of note is that the variations between the models is minor and the overall pattern of carbon accumulation in the ecosystems is the same. 
 \begin{table}[h!]
     \centering
     \begin{tabular}{cccc>{\centering\arraybackslash}p{0.2\linewidth}}
          Carbon Stock $tC$&&   ws3&libcbm &Average difference (\%)\\
          \hline \hline
          \multirow{2}{*}{Total Ecosystem}&Start& 
-     $1.265 \times 10^{9}$&$1.246 \times 10^{9}$ & \multirow{2}{*}{1.07}\\
-  &End& $1.633 \times 10^{9}$&$1.637 \times 10^{9}$ &\\
+     $1.261 \times 10^{9}$&$1.246 \times 10^{9}$ & \multirow{2}{*}{1.03}\\
+  &End& $1.634 \times 10^{9}$&$1.637 \times 10^{9}$ &\\
   \hline
- \multirow{2}{*}{Biomass}& Start& $0.424 \times 10^{9}$&$0.395 \times 10^{9}$ &\multirow{2}{*}{2.35}\\
+ \multirow{2}{*}{Biomass}& Start& $0.424 \times 10^{9}$&$0.395 \times 10^{9}$ &\multirow{2}{*}{2.41}\\
  & End& $0.619 \times 10^{9}$&$0.622 \times 10^{9}$ &\\
  \hline
- \multirow{2}{*}{DOM}& Start& $0.852 \times 10^{9}$&$0.851 \times 10^{9}$ & \multirow{2}{*}{1.09}\\
- & End& $1.012 \times 10^{9}$&$1.014 \times 10^{9}$ &\\
+ \multirow{2}{*}{DOM}& Start& $0.848 \times 10^{9}$&$0.851 \times 10^{9}$ & \multirow{2}{*}{1.19}\\
+ & End& $1.019 \times 10^{9}$&$1.014 \times 10^{9}$ &\\
  \hline \hline
  \end{tabular}
     \caption{Starting, end and average difference of carbon ($tC$) total in the ecosystem and its distribution between the Biomass and \ac{DOM} stocks compared between ws3 and libcbm. }
@@ -515,12 +511,13 @@ Figure \ref{fig: nh_emissions} illustrates the results for total carbon emission
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{emission_nh.pdf}
-    \caption{Total forest carbon emissions over the 200-year period under maximize-harvest scenario.}
+    \caption{Total forest carbon emissions over the 200-year period under the no-harvest scenario.}
     \label{fig: nh_emissions}
 \end{figure}
 
-Both models show consistent trends for carbon stocks and emissions. In both models, the projected trajectories for biomass carbon are identical, while the average difference of 1.17\% for the \ac{DOM} stock between two models. In total, the proposed model projects lower values of ecosystem stocks during the first 13 periods but higher values in the last 7 periods.
+Both models show consistent trends for carbon stocks and emissions. The proposed model projects slightly higher ecosystem and \ac{DOM} stocks than libcbm through most of the horizon, with the largest deviations in the early periods (up to $+2.9$\% in the ecosystem stock at period 4 and $+2.0$\% in the \ac{DOM} stock at period 5), converging to within 0.2\% by the final period.
 
+\subsubsection{Max Harvest}
 In the max-harvest scenario, the developed model projects lower values of ecosystem stocks than libcbm during the first 13 periods but higher values in the last 7 periods (Figure \ref{fig: st_mh}). Similarly, our model initially projects a lower \ac{DOM} stock, which declines until period 9 before gradually increasing until the end of the planning horizon.  The average percentage differences are $\pm$ 1.04\% for the ecosystem stock, $\pm$ 0.06\% for the biomass stock, and $\pm$ 1.17\% for the \ac{DOM} stock. demonstrating that the integration of the carbon indicator at the landscape level remains robust, even under scenarios of intensive harvest.
 \begin{figure}
     \centering
@@ -537,6 +534,8 @@ Despite the close results for the carbon stocks, the developed model consistentl
     \label{fig: em_mh}
 \end{figure}
 
+\subsection{Minimize Net Forest Carbon Emissions}
+
 \acp{HWP} and displacement are also crucial in carbon accounting analysis. The outputs from the bi-objective optimization model shows the results of the assessment for a combination of half-lives and displacement factors (Figure \ref{fig: trade_off} ). Figure \ref{fig: trade_off} reveals that there is a trade-off between harvest volume and net negative emissions and when the half-life and displacement factor increase, the trade-off curves shift toward the upper-right portion of the plot and become increasingly horizontal.
 \begin{figure}
     \centering
@@ -547,11 +546,11 @@ displacement factor + half-life).}
     \label{fig: trade_off}
 \end{figure}
 
-The results are presented in Figure \ref{fig: 3d_graph}. The results show a clear relationship between these two parameters and the model’s decision to harvest. In the dark blue region, the total harvest volume remains at zero. As either parameter increases, the model begins selecting harvest options, with the total volume rising sharply, forming a cliff pattern on the surface. In this transitional region (which is mostly the result of displacement factors between 0.6 and 1.5 tC / tC and the half-life between 0-200 years), the harvest volume increases rapidly from 0 to greater than $1.2 \times 10^9$ m$^3$, creating an unstable zone with high output sensitivity (top view in Figure \ref{fig: 2d_graphs}).
+The results are presented in Figure \ref{fig: 3d_graph}. The surface shows a clear relationship between the two parameters and the model's decision to harvest. For displacement factors below about 0.5 tC/tC, the utilized harvest volume remains near zero at every half-life. As either parameter increases, the model begins selecting harvest prescriptions and the utilized volume rises, steeply in two bands: for half-lives of 50 years and longer, the volume climbs from near zero to roughly $0.3$--$0.5 \times 10^9$ m$^3$ by a displacement factor of about 1.1, and it rises again between displacement factors of 2.0 and 2.4, reaching the surface maximum of $1.22 \times 10^9$ m$^3$ at a 200-year half-life and a displacement factor of 2.4 tC/tC. Short half-lives (30 years and below) delay the response, with the steepest increase between displacement factors of 1.0 and 1.5 (top view in Figure \ref{fig: 2d_graphs}).
 
-In Figure \ref{fig: 2d_graphs}, the side view shows the isolated influence of half-life, keeping the displacement factor constant along the y-axis. Here, total harvest volume remains low when the half-life is below 50 years, but increases sharply between 75–125 years, particularly when the displacement factor is high. The total volume reaches over $1.4 \times 10^9$ m$^3$ when the half-life exceeds 150 years with a medium level of displacement factor (around 1.1 tC/tC).
+In Figure \ref{fig: 2d_graphs}, the side view shows the isolated influence of half-life at fixed displacement factor. At low-to-moderate displacement factors, the utilized volume remains low for half-lives below about 50 years and increases steeply between 50 and 100 years; at high displacement factors, longer half-lives continue to raise the volume, which reaches $1.22 \times 10^9$ m$^3$ at a 200-year half-life. The displacement factor at which the utilized volume first exceeds $0.2 \times 10^9$ m$^3$ falls from 1.4 at a 10-year half-life to 0.7 at a 200-year half-life.
 
-The front view in \ref{fig: 2d_graphs} highlights the effect of the displacement factor, with half-life held constant on the x-axis. When the displacement factor is below 0.6 tC/tC, the harvest volume stays near 0, even with half-lives up to 200 years. In contrast, displacement factors above 1.0 tC/tC result in a substantial increase in harvest volume, especially for moderate-to-high half-lives. Once the displacement factor exceeds 1.5 tC/tC, the model opts for nearly full harvest volume (above $1.4 \times 10^9$ m$^3$) even when the half-life is 0.
+The front view in \ref{fig: 2d_graphs} highlights the effect of the displacement factor at fixed half-life. Below about 0.5 tC/tC, the utilized volume stays near zero even with half-lives up to 200 years, while displacement factors above 1.0 tC/tC substantially increase the volume for moderate-to-high half-lives. At a displacement factor of 2.4 tC/tC, the volume exceeds $0.6 \times 10^9$ m$^3$ even at a one-year half-life.
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{3d.pdf}
@@ -576,23 +575,32 @@ Although our model and libcbm use similar inputs such as forest inventory, yield
 
 There are several policy-making insights from the forest management perspective. As observed in the age distributions (Figures \ref{fig: unmanaged age structure}, \ref{fig: managed age structure}), the unmanaged forests are shaped by natural disturbances rather than silvicultural interventions, while managed forests are formed by decades of harvesting, planing, and stand-replacing treatments. These differences between managed and unmanaged forests have direct implications for carbon dynamics. Managed forests may support higher short-term carbon sequestration rates due to rapid biomass accumulation in young stands, but unmanaged forests can contribute substantially to long-term carbon storage through older, high-biomass stands. Furthermore, unmanaged forests offer important structural complexity and ecological functions that support habitat diversity and long-term ecosystem stability \citep{sutherland2016recovery}.
 
-The comparisons between our model and libcbm reveal the reliability and robustness of the developed model. In the no-harvest scenario, the biomass carbon dynamics mirror the changes observed in the growing stock due to the strong correlation between the biomass carbon stock and the wood volume of living trees. The forest ecosystem functioned as a persistent carbon sink, with net emission remaining negative throughout the simulation period, sequestering \ac{CO$_2$} from the atmosphere. The biomass carbon stocks increased rapidly during the initial simulation periods due to forest growth. Meanwhile, the \ac{DOM} stock exhibited a slower but steady increase driven by the dynamics of natural litterfall and decomposition. The carbon yield curve method performed exceptionally well in this scenario, with deviations from libcbm averaging below 0.5\%. This close alignment confirmed that the method succeeded in modeling the carbon dynamics of unmanaged forests at the landscape scale as represented in libcbm. Without harvesting activities, the carbon modeling outputs of the proposed model and libcbm exhibit nearly identical trends, confirming the successful integration of the carbon yield curves into the optimization model (Figure~\ref{fig: nh_stock} and Figure~\ref{fig: nh_emissions})
+The comparisons between our model and libcbm reveal the reliability and robustness of the developed model. In the no-harvest scenario, the biomass carbon dynamics mirror the changes observed in the growing stock due to the strong correlation between the biomass carbon stock and the wood volume of living trees. The forest ecosystem functioned as a persistent carbon sink, with net emission remaining negative throughout the simulation period, sequestering \ac{CO$_2$} from the atmosphere. The biomass carbon stocks increased rapidly during the initial simulation periods due to forest growth. Meanwhile, the \ac{DOM} stock exhibited a slower but steady increase driven by the dynamics of natural litterfall and decomposition. The carbon yield curve method performed well in this scenario: differences from libcbm were largest in the first periods (biomass $+7.5$\% at period 2) and converged below 1\% by period 10, with matching long-term trajectories. This close alignment confirmed that the method succeeded in modeling the carbon dynamics of unmanaged forests at the landscape scale as represented in libcbm. Without harvesting activities, the carbon modeling outputs of the proposed model and libcbm exhibit nearly identical trends, confirming the successful integration of the carbon yield curves into the optimization model (Figure~\ref{fig: nh_stock} and Figure~\ref{fig: nh_emissions})
 
 As shown in Figures \ref{fig: st_mh}, both libcbm and our model have projected relatively similar carbon stocks pools while the most significant divergence occurred in net ecosystem carbon emission (Figure \ref{fig: em_mh}). This likely results from the cumulative effect of how the model resets post-harvest stand age to zero, applying initial values of carbon yield curves, which inflate \ac{DOM} fluxes. Despite these discrepancies, overall emission trends remain aligned across models. As such, it is still feasible to use the model for optimization purposes to optimize forest management decisions considering carbon stocks and emissions.
 
-From a climate change mitigation perspective, two key forest management strategies are widely discussed. One considers forests as carbon reservoirs, where conservation policies aim to preserve and increase forest carbon stocks. The other recommends intensified forest management, producing \acp{HWP} whose use can lead to displacement effects that potentially reduce ecosystem emissions. Within the scientific community, however, there is still no consensus on which approach provides the best climate benefit. A group of studies (e.g. \citep{gustavsson2017climate}, \citep{heinonen2017scenario}) concluded that increasing harvesting level can lead to more climate benefits while other researchers (e.g. \cite{leturcq2020ghg}, \cite{skytt2021climate}, \cite{soimakallio2022closing}) found increased harvesting counterproductive for climate change mitigation. Considering the inherent uncertainty in displacement factor values, this study investigate the forest management under a wide range of possible displacement factors and half-lives. Figure \ref{fig: 3d_graph} offers valuable guidance for policymakers aiming to provide strategies that both contribute to the climate change mitigation and meet business objectives. When half-lives and displacement factors are low, the model identifies a no-harvest approach as optimal, reflecting the limited ability of \acp{HWP} to offset the emissions generated by harvesting. In contrast, when both values are high, maximizing harvest becomes the preferred policy. This reflects the critical role of long-lived \acp{HWP} with strong substitution effects. In practice, forest management approaches that prioritize producing durable wood products capable of replacing more carbon-intensive materials can help bridge the gap between economic and climate goals. 
+From a climate change mitigation perspective, two key forest management strategies are widely discussed. One considers forests as carbon reservoirs, where conservation policies aim to preserve and increase forest carbon stocks. The other recommends intensified forest management, producing \acp{HWP} whose use can lead to displacement effects that potentially reduce ecosystem emissions. Within the scientific community, however, there is still no consensus on which approach provides the best climate benefit. A group of studies (e.g. \citep{gustavsson2017climate}, \citep{heinonen2017scenario}) concluded that increasing harvesting level can lead to more climate benefits while other researchers (e.g. \cite{leturcq2020ghg}, \cite{skytt2021climate}, \cite{soimakallio2022closing}) found increased harvesting counterproductive for climate change mitigation. Considering the inherent uncertainty in displacement factor values, this study investigate the forest management under a wide range of possible displacement factors and half-lives. Figure \ref{fig: 3d_graph} offers valuable guidance for policymakers aiming to provide strategies that both contribute to the climate change mitigation and meet business objectives. When half-lives and displacement factors are low, the model keeps the harvest level near zero, reflecting the limited ability of \acp{HWP} to offset the emissions generated by harvesting. In contrast, when both values are high, maximizing harvest becomes the preferred policy. This reflects the critical role of long-lived \acp{HWP} with strong substitution effects. In practice, forest management approaches that prioritize producing durable wood products capable of replacing more carbon-intensive materials can help bridge the gap between economic and climate goals. 
 
-Figure \ref{fig: 3d_graph} also shows that, among the input parameters, the displacement factor is more sensitive than the half-life. Moreover, there is a narrow, unstable transition region where even small changes in either parameter can lead to a sudden shift in the optimal policy from a no-harvest to a max-harvest scenario. This implies that there is no “one-size-fits-all” solution for forest management, as policies are highly sensitive to underlying uncertainties in the downstream forest supply chain. Such uncertainties can originate from various sources. For instance, changes in trade tariffs or fluctuations in fibre demand can significantly influence \acp{HWP} production, ultimately reshaping forest management strategies.
+Figure \ref{fig: 3d_graph} also shows that, among the input parameters, the displacement factor is more sensitive than the half-life. Moreover, the transition band is steep: small changes in either parameter shift the optimal harvest level substantially. This implies that there is no “one-size-fits-all” solution for forest management, as policies are highly sensitive to underlying uncertainties in the downstream forest supply chain. Such uncertainties can originate from various sources. For instance, changes in trade tariffs or fluctuations in fibre demand can significantly influence \acp{HWP} production, ultimately reshaping forest management strategies.
 
 
 \section{Conclusion}
 \label{sec:conclusion}
+
+This study developed an integrated forest carbon management framework that couples the \ac{ws3} forest estate optimization model with libCBM-derived carbon yield curves and a harvested wood product carbon model, and applied it to the Prince George \ac{TSA} in central British Columbia. The framework supports optimizing either total forest system carbon stocks or net system carbon emissions under even-flow harvesting constraints.
+
+The carbon yield curve approach reproduced libcbm's landscape carbon dynamics closely in the no-harvest scenario, with the largest differences confined to the first periods and converging below 1\% thereafter. The curve generation and stock-difference accounting used here keep the optimization and the reported emissions internally consistent, with a small residual difference between first-rotation and steady-state harvest histories (up to about 1.6\% of landscape carbon).
+
+The half-life and displacement sensitivity analysis shows that the optimal harvesting level is highly sensitive to both parameters. When the displacement factor is below about 0.5 tC/tC, emission-minimizing management keeps harvest near zero regardless of half-life; as the displacement factor and half-life increase, harvest rises steeply and reaches its maximum at long half-lives and high displacement factors. Because this response is steep, small errors in the assumed half-life or displacement factor can substantially change the recommended management strategy, and policies based on these parameters should account for their uncertainty.
+
+Several limitations remain. The residual carbon inconsistency between first-rotation and steady-state harvest histories is small but nonzero, and the curve representation is subject to \ac{ws3}'s default simplification (within about 1.4\% of the generated curve sums). The prescription set distinguishes only clearcut harvest and no-harvest options, so alternative silvicultural systems are not represented. Future work should extend the framework to alternative treatments, refine the landscape-level validation of the harvested-landscape carbon accounting, and incorporate uncertainty in half-life and displacement estimates directly into the optimization.
 \newpage
 
 
 
 \section*{CRediT authorship contribution statement}
 \label{sec: CRediT}
+\textbf{Kathleen Coupland:} Conceptualization, Methodology, Software, Formal analysis, Investigation, Writing -- original draft. \textbf{Gregory Paradis:} Conceptualization, Methodology, Supervision, Writing -- review and editing. \textbf{Elaheh Ghasemi:} Writing -- review and editing. \textbf{Salar Ghotb:} Writing -- review and editing. \textbf{Walter Yan:} Conceptualization, Data curation, Writing -- review and editing.
 
 
 \section*{Declaration of competing interest}
@@ -606,7 +614,7 @@ This work was supported by ...
 
 \section*{Data availability statement}
 \label{sec: data availability}
-The data and code supporting the findings of this study are available in ?. 
+The data and code supporting the findings of this study are openly available in the UBC-FRESH fresh-yan repository (https://github.com/UBC-FRESH/fresh-yan), which contains the model inputs, the generated model records, and the analysis scripts. 
 \end{linenumbers}
 %% If you have bibdatabase file and want bibtex to generate the
 %% bibitems, please use
