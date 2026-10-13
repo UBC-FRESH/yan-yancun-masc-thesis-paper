@@ -62,6 +62,16 @@ uncertainty overlay; validation under harvest.
   dead weight), Dryad deposit (data + records pointer), AI-assistance disclosure,
   CRediT (author confirmation pending), funding line (pending authors).
 
+## Status (2026-10-13, later)
+- Passes 1-4 complete and pushed: 666589c (title/abstract/intro), b96546d + 1c1df7d
+  (methods), 7e34599 + dc5aa6b + a0aa2aa (results + validation), 5482209 (discussion,
+  limitations, conclusion).
+- Pass 5: no-harvest figures refreshed from the femic TSA 24 records; build clean
+  (38 pp); abstract 195 words; references 43; main text ~5,700 words.
+- Remaining: five-unit map figure + regenerated species/age-structure figures; typo
+  and formatting pass; author items (funding line, CRediT confirmation); Dryad
+  deposit; AI-assistance disclosure.
+
 ## Artifact pointers
 - fresh-yan records: curves (`curves/femic-tsa<code>/`), base scenarios, grids
   (`results/femic-tsa<code>/tradeoff_grid/`), cross-TSA analysis
