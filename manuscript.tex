@@ -495,24 +495,24 @@ When harvested volume is maximized under the 5\% even-flow constraints, TSA 24's
 
 \subsection{Carbon Stocks}
 \subsubsection{No Harvest}
-In the no-harvest scenario, the initial total carbon stored three carbon stocks from \ac{ws3} and libcbm are presented in table \ref{tab:No harvest emissions} . These values are also represented graphically in \ref{fig: nh_stock} , showing the deviations between the two models through time. The \ac{DOM} carbon stock shows a slow increase across the planning horizon, with differences between the two models remaining under 2\% in all periods (mean 1.2\%) and deemed negligible and within standard model variability. The biomass carbon stock exhibited a faster growth in the first 8 periods followed by a slight decline through to the end of the planning horizon. The initial values of the biomass carbon stock were slightly different between \ac{ws3} and libcbm with ws3 being $+$ $0.029 \times 10^{9}$ tC (7.3\%). This difference is less than 1\% at period 10.  Of note is that the variations between the models is minor and the overall pattern of carbon accumulation in the ecosystems is the same. 
+In the no-harvest scenario the landscape is left to grow: Table \ref{tab:No harvest emissions} compares the initial and final carbon stocks of the two implementations for TSA 24, and Figure \ref{fig: nh_stock} traces them over the horizon. The curve-based model and the reference libCBM simulation agree closely on stocks - period-mean absolute differences of 2.5\% (ecosystem), 3.8\% (biomass) and 2.1\% (\ac{DOM}) - with the largest relative differences in the earliest periods, where the stock denominators are small, and convergence to within about 1\% by the final period. Across the five management units the same comparison gives ecosystem-stock differences of 0.9-3.7\% (biomass 1.4-3.8\%, \ac{DOM} 0.9-6.2\%). In both implementations the \ac{DOM} stock grows slowly across the horizon while biomass rises quickly for the first decades and then flattens, and the same accumulation pattern appears in every unit.
 \begin{table}[h!]
     \centering
     \begin{tabular}{cccc>{\centering\arraybackslash}p{0.2\linewidth}}
          Carbon Stock $tC$&&   ws3&libcbm &Average difference (\%)\\
          \hline \hline
          \multirow{2}{*}{Total Ecosystem}&Start& 
-     $1.261 \times 10^{9}$&$1.246 \times 10^{9}$ & \multirow{2}{*}{1.03}\\
-  &End& $1.634 \times 10^{9}$&$1.637 \times 10^{9}$ &\\
+     $0.711 \times 10^{9}$&$0.702 \times 10^{9}$ & \multirow{2}{*}{2.50}\\
+  &End& $1.025 \times 10^{9}$&$1.020 \times 10^{9}$ &\\
   \hline
- \multirow{2}{*}{Biomass}& Start& $0.424 \times 10^{9}$&$0.395 \times 10^{9}$ &\multirow{2}{*}{2.41}\\
- & End& $0.619 \times 10^{9}$&$0.622 \times 10^{9}$ &\\
+ \multirow{2}{*}{Biomass}& Start& $0.216 \times 10^{9}$&$0.192 \times 10^{9}$ &\multirow{2}{*}{3.84}\\
+ & End& $0.416 \times 10^{9}$&$0.419 \times 10^{9}$ &\\
  \hline
- \multirow{2}{*}{DOM}& Start& $0.848 \times 10^{9}$&$0.851 \times 10^{9}$ & \multirow{2}{*}{1.19}\\
- & End& $1.019 \times 10^{9}$&$1.014 \times 10^{9}$ &\\
+ \multirow{2}{*}{DOM}& Start& $0.495 \times 10^{9}$&$0.510 \times 10^{9}$ & \multirow{2}{*}{2.05}\\
+ & End& $0.610 \times 10^{9}$&$0.601 \times 10^{9}$ &\\
  \hline \hline
  \end{tabular}
-    \caption{Starting, end and average difference of carbon ($tC$) total in the ecosystem and its distribution between the Biomass and \ac{DOM} stocks compared between ws3 and libcbm. }
+    \caption{Starting, end and average difference of carbon (tC) in the ecosystem and its distribution between the biomass and \ac{DOM} stocks, compared between ws3 and libcbm under the no-harvest scenario (TSA 24; average = period-mean absolute percentage difference). }
     \label{tab:No harvest emissions}
 \end{table} 
 
@@ -522,7 +522,7 @@ In the no-harvest scenario, the initial total carbon stored three carbon stocks 
     \caption{The total forest carbon stocks over the 200-year period under no-harvest scenario.}
     \label{fig: nh_stock}
 \end{figure}
-Figure \ref{fig: nh_emissions} illustrates the results for total carbon emissions from the forest ecosystem under the no-harvest scenario. Initially, the emission starts at a relatively high value of $-9.11 \times 10^{5}$ t$ \mathrm{CO}_2 $, which rapidly decreases to $-4.25 \times 10^{6}$ t$ \mathrm{CO}_2 $ over the first five periods. Subsequently, the sequestration rate slows, and the emissions gradually increase to $-4.03 \times 10^{5}$ t$ \mathrm{CO}_2 $ over the next 15 decades.
+Figure \ref{fig: nh_emissions} shows the net emission flux of the no-harvest landscape. Net emissions are small residuals of much larger gross fluxes: on the curve side TSA 24 remains a sink of $0.4$-$3.3 \times 10^{6}$ tCO$_2$ per period throughout the horizon, while the reference simulation flips sign in a single early period. This is the expected cost of representing annual processes on a 10-year carbon curve - absolute differences are small relative to the gross fluxes that generate them, but their relative expression is large - and we therefore base the validation on stocks rather than fluxes (Section \ref{sec:discussion}).
 
 \begin{figure}
     \centering
@@ -531,7 +531,7 @@ Figure \ref{fig: nh_emissions} illustrates the results for total carbon emission
     \label{fig: nh_emissions}
 \end{figure}
 
-Both models show consistent trends for carbon stocks and emissions. The proposed model projects slightly higher ecosystem and \ac{DOM} stocks than libcbm through most of the horizon, with the largest deviations in the early periods (up to $+2.9$\% in the ecosystem stock at period 4 and $+2.0$\% in the \ac{DOM} stock at period 5), converging to within 0.2\% by the final period.
+The curve layer therefore reproduces the reference model's no-harvest stock dynamics within a few percent in every unit, with no systematic drift over the horizon (final-period differences of 0.5-1.5\% in TSA 24). Together with the exact conservation of the reporting ledger and the optimization-identity checks, this is the validation basis for the results below.
 
 \subsubsection{Max Harvest}
 In the max-harvest scenario, the developed model projects lower values of ecosystem stocks than libcbm during the first 13 periods but higher values in the last 7 periods (Figure \ref{fig: st_mh}). Similarly, our model initially projects a lower \ac{DOM} stock, which declines until period 9 before gradually increasing until the end of the planning horizon.  The average percentage differences are $\pm$ 1.04\% for the ecosystem stock, $\pm$ 0.06\% for the biomass stock, and $\pm$ 1.17\% for the \ac{DOM} stock. The stock trajectories therefore track the reference model closely under intensive harvest as well; the flux-level comparison is discussed below.
