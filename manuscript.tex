@@ -427,9 +427,27 @@ To assess how the optimal harvest level responds to \acp{HWP} parameters, each m
 \section{Results}
 \label{sec:results}
 \subsection{Forest Inventory}
-The \ac{THLB} is predominantly coniferous, with lodge-pole pine (\textit{Pinus contorta}) accounting for 49\%, spruce (\textit{Picea spp.}) for 33\%, subalpine fir (\textit{Abies lasiocarpa}) for 9\%, Douglas fir (\textit{Pseudotsuga menziesii}) for 2\%, and cedar (\textit{Cedrus spp.}) for 1\%. 
-The \ac{PG}-\ac{TSA} is composed of two main \acp{BEC}: \ac{SBS} (62.2\%) and \ac{ESSF} (28.7\%). The remaining 9\% of the land base is composed of \ac{BAFA} (3.7\%), \ac{ICH} (2.8\%), \ac{SWB} (1.2\%), \ac{SBPS} (0.9\%), \ac{BWBS} (0.4\%), \ac{MS} (0.05\%), and \ac{IMA} (0.02\%). Approximately 44\% of the study area, about 3.10 milion hectares of crown forest land, is classified as the \ac{THLB}, defined as forest land acceptable and economically feasible for timber harvest \citep{bcfpb_glossary}. The remaining area consists of regions with low timber volume, low site productivity, and accessibility challenges (e.g., steep slopes, remote locations lacking road infrastructure) that make them economically unattractive or infeasible under current market conditions \citep{princegeorge2017}. Additional areas were excluded from the \ac{THLB} for legal, ecological or cultural reasons including parks, protected areas (e.g., wildlife habitat), riparian zones (lakes, rivers, wetlands, and streams), and sites of cultural significance (e.g., Indigenous archaeological sites) \citep{princegeorge2017}. 
-Using the forest inventory data, the study area was stratified into 24 distinct \acs{AU}. Of the 24 \acs{AU}, 11 were for unmanaged forests (\ac{THLB} = 0) and 13 for managed forests (\ac{THLB} = 1). The species composition by area (ha) for unmanaged forests (outside the \ac{THLB}) and managed forests (within the \ac{THLB}) are summarized in Figure \ref{fig: unmanaged species structure} and Figure \ref{fig: managed species structure}. 
+Each management unit is represented by an open model instance built from the 2025 provincial forest inventory (\ac{VRI} $\rightarrow$ VDYP7/TIPSY yield curves $\rightarrow$ Woodstock/ws3 sections) and restricted to the timber-harvesting land base (stands with a mean \ac{THLB} raster signal $\geq$ 50\%); initial stand ages are capped at 300 years and snapped to 10-year classes, and harvested stands regenerate to age 0, so the instances are multi-rotation. Table \ref{tab:units} summarizes the five instances: harvested landbase (0.73-3.31 million ha), development types (27-49), initial ecosystem carbon (157-677 MtC) and the volume-maximizing base-scenario harvest (0.28-1.41 billion m$^3$ over the 200-year horizon). Figures \ref{fig: unmanaged species structure}-\ref{fig: managed age structure} describe the species and age structure of TSA 24, the largest unit, as an example.
+% TODO(reframe): regenerate the species/age-structure figures from the 2025 VLI instances for all five units.
+
+\begin{table}[h!]
+    \centering
+    \small
+    \begin{tabular}{lrrrrrrr}
+        \multicolumn{3}{c}{} & Base scenario & \multicolumn{4}{c}{Flip characterization} \\
+        \cline{4-5} \cline{6-8}
+        Unit & THLB (ha) & Dev. types & Initial C (MtC) & Harvest ($10^9$ m$^3$) & df50 & Max (frac.) & Zero cells \\
+        \hline \hline
+        TSA 08 & 1,400,549 & 32 & 350 & 0.58 & 0.95 & 0.78 & 0 \\
+        TSA 16 & 1,513,346 & 49 & 287 & 0.47 & 1.56 & 0.57 & 1,446 \\
+        TSA 24 & 3,314,847 & 27 & 677 & 1.41 & 1.61 & 0.76 & 0 \\
+        TSA 40 & 1,015,126 & 30 & 218 & 0.42 & 1.35 & 0.73 & 0 \\
+        TSA 41 & 731,150 & 38 & 157 & 0.28 & 1.54 & 0.70 & 0 \\
+        \hline \hline
+    \end{tabular}
+    \caption{The five management units: harvested landbase and development types of the model instances; initial ecosystem carbon; the volume-maximizing base scenario (200-year total); and the emission-minimizing flip characterization (df50 = displacement factor at the mid-point of the transition at a 100-year half-life; Max = grid maximum as a fraction of the base scenario; Zero cells = number of the 5,000 scenarios with a zero-harvest optimum).}
+    \label{tab:units}
+\end{table}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{leading_species_structure_unmanaged.pdf}
@@ -465,7 +483,7 @@ The age structure and area distribution of unmanaged and managed forests in \ac{
 \label{sec: Model performance}
 The \ac{SFMM} developed allows for users to set various objectives. 
 \subsection{Maximize Harvest Volume}
-When harvesting volume is maximized, harvest area ranges from 369,000 to 408,000 $ha/period$ and harvest volume ranges from $7.45\times10^7$ to $8.24\times10^7$ $m^3/period$. Growing stock decreases from $7.21 \times 10^8$ to $4.68 \times 10^8$ $m^3$. 
+When harvested volume is maximized under the 5\% even-flow constraints, TSA 24's harvest area ranges from 326,000 to 361,000 ha per 10-year period and its harvested volume from $6.73\times10^7$ to $7.44\times10^7$ m$^3$ per period ($1.41\times10^9$ m$^3$ in total over the horizon). Growing stock declines from $3.65\times10^8$ to $1.95\times10^8$ m$^3$. Across the five units the base scenarios harvest between $0.28\times10^9$ and $1.41\times10^9$ m$^3$ in total (Table \ref{tab:units}); these volume-maximizing solutions are the baselines against which the emission-minimizing harvest levels are expressed below, so that units of different size are directly comparable. 
 
 
 \begin{figure}
@@ -516,7 +534,7 @@ Figure \ref{fig: nh_emissions} illustrates the results for total carbon emission
 Both models show consistent trends for carbon stocks and emissions. The proposed model projects slightly higher ecosystem and \ac{DOM} stocks than libcbm through most of the horizon, with the largest deviations in the early periods (up to $+2.9$\% in the ecosystem stock at period 4 and $+2.0$\% in the \ac{DOM} stock at period 5), converging to within 0.2\% by the final period.
 
 \subsubsection{Max Harvest}
-In the max-harvest scenario, the developed model projects lower values of ecosystem stocks than libcbm during the first 13 periods but higher values in the last 7 periods (Figure \ref{fig: st_mh}). Similarly, our model initially projects a lower \ac{DOM} stock, which declines until period 9 before gradually increasing until the end of the planning horizon.  The average percentage differences are $\pm$ 1.04\% for the ecosystem stock, $\pm$ 0.06\% for the biomass stock, and $\pm$ 1.17\% for the \ac{DOM} stock. demonstrating that the integration of the carbon indicator at the landscape level remains robust, even under scenarios of intensive harvest.
+In the max-harvest scenario, the developed model projects lower values of ecosystem stocks than libcbm during the first 13 periods but higher values in the last 7 periods (Figure \ref{fig: st_mh}). Similarly, our model initially projects a lower \ac{DOM} stock, which declines until period 9 before gradually increasing until the end of the planning horizon.  The average percentage differences are $\pm$ 1.04\% for the ecosystem stock, $\pm$ 0.06\% for the biomass stock, and $\pm$ 1.17\% for the \ac{DOM} stock. The stock trajectories therefore track the reference model closely under intensive harvest as well; the flux-level comparison is discussed below.
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{maximize_harvest_stock_total.pdf}
@@ -524,7 +542,7 @@ In the max-harvest scenario, the developed model projects lower values of ecosys
     \label{fig: st_mh}
 \end{figure}
 
-Despite the close results for the carbon stocks, the developed model consistently underestimate at the beginning and then overestimate net emission in the simulation horizon, with deviations reaching up to 100\% (Figure \ref{fig: em_mh}). 
+Net emission fluxes diverge more than stocks: the curve-based model updates at the registered period grid while libCBM simulates annual processes, so period-level flux differences can remain noticeable even where stock trajectories agree (Figure \ref{fig: em_mh}). This comparison predates the corrected curve generation, and a fully corrected harvested-landscape cross-validation remains future work (Section \ref{sec:discussion}). 
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{emission_mh.pdf}
@@ -534,21 +552,10 @@ Despite the close results for the carbon stocks, the developed model consistentl
 
 \subsection{Minimize Net Forest Carbon Emissions}
 
-\acp{HWP} and displacement are also crucial in carbon accounting analysis. The outputs from the bi-objective optimization model shows the results of the assessment for a combination of half-lives and displacement factors (Figure \ref{fig: trade_off} ). Figure \ref{fig: trade_off} reveals that there is a trade-off between harvest volume and net negative emissions and when the half-life and displacement factor increase, the trade-off curves shift toward the upper-right portion of the plot and become increasingly horizontal.
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{tradoff_curves_me.pdf}
-    \caption{Trade-off curves between maximizing wood supply and maximizing negative
-net carbon emission with varied HWP half-lives and displacement factors (curve name =
-displacement factor + half-life).}
-    \label{fig: trade_off}
-\end{figure}
+\acp{HWP} and displacement enter the optimization through the product-pool model and the substitution credit, and the emission-minimizing solution responds strongly to both. Figure \ref{fig: 3d_graph} (orthographic views in Figure \ref{fig: 2d_graphs}) maps the optimal utilized harvest volume over the full parameter plane for TSA 24. For displacement factors below roughly 0.5 tC/tC the optimal solution harvests little at any half-life. As the displacement factor rises the optimal harvest level climbs steeply and approaches the volume-maximizing solution, reaching $1.07\times10^9$ m$^3$ (76\% of the base scenario) at a 200-year half-life and a displacement factor of 2.4 tC/tC. Half-life moves the threshold rather than determining it: at a 100-year half-life the mid-point of the transition - the displacement factor at which the optimal harvest crosses half of its observed response range - is 1.61 tC/tC, and it stays between 1.47 and 1.78 as the half-life spans 1-200 years.
 
-The results are presented in Figure \ref{fig: 3d_graph}. The surface shows a clear relationship between the two parameters and the model's decision to harvest. For displacement factors below about 0.5 tC/tC, the utilized harvest volume remains near zero at every half-life. As either parameter increases, the model begins selecting harvest prescriptions and the utilized volume rises, steeply in two bands: for half-lives of 50 years and longer, the volume climbs from near zero to roughly $0.3$--$0.5 \times 10^9$ m$^3$ by a displacement factor of about 1.1, and it rises again between displacement factors of 2.0 and 2.4, reaching the surface maximum of $1.22 \times 10^9$ m$^3$ at a 200-year half-life and a displacement factor of 2.4 tC/tC. Short half-lives (30 years and below) delay the response, with the steepest increase between displacement factors of 1.0 and 1.5 (top view in Figure \ref{fig: 2d_graphs}).
+The same qualitative flip appears in all five units, but its location is a property of the landscape as much as of the parameters (Figure \ref{fig: cross_tsa}, Table \ref{tab:units}). Mid-point thresholds at a 100-year half-life range from 0.95 tC/tC (TSA 08) to 1.61 tC/tC (TSA 24), and the onset of the transition (10\% of each unit's response range) varies more than five-fold, from 0.17 to 0.87 tC/tC. A change of management unit shifts the threshold about as much as moving the half-life across its entire 1-200-year range. The forms of the flip also differ: in TSA 16 the emission-minimizing solution is complete cessation - zero harvest - for displacement factors up to about 0.5 tC/tC at every half-life (1,446 of 5,000 scenarios), the strongest form of the flip in the set, while in TSA 08 no scenario fully ceases harvesting. The units span a three-fold range in harvested area and a four-fold range in initial ecosystem carbon, yet the thresholds do not order simply with unit size or starting carbon; disentangling the roles of age structure, productivity and site carbon is left to future work. Because the prescription set of this model is clearcut harvesting at a fixed 120-year rotation versus no harvest, these results characterize the climate-optimal harvest level, not silvicultural systems.
 
-In Figure \ref{fig: 2d_graphs}, the side view shows the isolated influence of half-life at fixed displacement factor. At low-to-moderate displacement factors, the utilized volume remains low for half-lives below about 50 years and increases steeply between 50 and 100 years; at high displacement factors, longer half-lives continue to raise the volume, which reaches $1.22 \times 10^9$ m$^3$ at a 200-year half-life. The displacement factor at which the utilized volume first exceeds $0.2 \times 10^9$ m$^3$ falls from 1.4 at a 10-year half-life to 0.7 at a 200-year half-life.
-
-The front view in \ref{fig: 2d_graphs} highlights the effect of the displacement factor at fixed half-life. Below about 0.5 tC/tC, the utilized volume stays near zero even with half-lives up to 200 years, while displacement factors above 1.0 tC/tC substantially increase the volume for moderate-to-high half-lives. At a displacement factor of 2.4 tC/tC, the volume exceeds $0.6 \times 10^9$ m$^3$ even at a one-year half-life.
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{3d.pdf}
@@ -561,6 +568,13 @@ The front view in \ref{fig: 2d_graphs} highlights the effect of the displacement
     \includegraphics[width=1\linewidth]{xyz.pdf}
     \caption{Orthographic views of 3D mapping of model sensitivity to HWP half-life and displacement factor.}
     \label{fig: 2d_graphs}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{cross_tsa_thresholds.pdf}
+    \caption{Displacement-factor flip thresholds by \ac{HWP} half-life for the five management units. Lines: mid-point of the transition (the displacement factor at which the optimal harvest crosses half of each unit's observed response range); bands: 10-90\% of that range.}
+    \label{fig: cross_tsa}
 \end{figure}
 
 
