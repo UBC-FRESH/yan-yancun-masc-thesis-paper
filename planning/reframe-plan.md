@@ -68,9 +68,13 @@ uncertainty overlay; validation under harvest.
   limitations, conclusion).
 - Pass 5: no-harvest figures refreshed from the femic TSA 24 records; build clean
   (38 pp); abstract 195 words; references 43; main text ~5,700 words.
-- Remaining: five-unit map figure + regenerated species/age-structure figures; typo
-  and formatting pass; author items (funding line, CRediT confirmation); Dryad
-  deposit; AI-assistance disclosure.
+- Pass 5b: five-unit map, age-structure and species-mix figures generated from the
+  instances (`scripts/five_tsa_figures.py` in fresh-yan) and wired into the
+  manuscript; the data-availability statement now uses the GitHub-release + Zenodo
+  DOI route (author account; per author preference over Dryad); an AI-assistance
+  declaration was added. Build clean at 34 pp.
+- Remaining: typo and formatting pass; author items (funding line, CRediT
+  confirmation); tag the release to mint the Zenodo DOI.
 
 ## Artifact pointers
 - fresh-yan records: curves (`curves/femic-tsa<code>/`), base scenarios, grids
