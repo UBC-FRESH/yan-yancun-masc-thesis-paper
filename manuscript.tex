@@ -426,6 +426,7 @@ Each management unit is represented by an open model instance built from the 202
 \begin{table}[h!]
     \centering
     \small
+    \resizebox{\textwidth}{!}{%
     \begin{tabular}{lrrrrrrr}
         \multicolumn{3}{c}{} & Base scenario & \multicolumn{4}{c}{Flip characterization} \\
         \cline{4-5} \cline{6-8}
@@ -437,7 +438,7 @@ Each management unit is represented by an open model instance built from the 202
         TSA 40 & 1,015,126 & 30 & 223 & 0.42 & 1.35 & 0.73 & 0 \\
         TSA 41 & 731,150 & 38 & 161 & 0.28 & 1.54 & 0.69 & 0 \\
         \hline \hline
-    \end{tabular}
+    \end{tabular}}
     \caption{The five management units: harvested landbase and development types of the model instances; initial ecosystem carbon (model period-0 inventory; record: \texttt{results/cross-tsa/five\_tsa\_attributes.csv}); the volume-maximizing base scenario (200-year total); and the emission-minimizing flip characterization (df50 = displacement factor at the mid-point of the transition at a 100-year half-life; Max = grid maximum as a fraction of the base scenario; Zero cells = number of the 5,000 scenarios with a zero-harvest optimum).}
     \label{tab:units}
 \end{table}
@@ -470,21 +471,21 @@ When harvested volume is maximized under the 5\% even-flow constraints, TSA 24's
 
 \subsection{Carbon Stocks}
 \subsubsection{No Harvest}
-In the no-harvest scenario the landscape is left to grow: Table \ref{tab:No harvest emissions} compares the initial and final carbon stocks of the two implementations for TSA 24, and Figure \ref{fig: nh_stock} traces them over the horizon. The curve-based model and the reference libCBM simulation agree closely on stocks - period-mean absolute differences of 2.5\% (ecosystem), 3.8\% (biomass) and 2.1\% (\ac{DOM}) - with the largest relative differences in the earliest periods, where the stock denominators are small, and convergence by the final period (biomass within about 1\% in all units, ecosystem within about 1\% in four of five units - 3.0\% in TSA 08 - and \ac{DOM} within about 4\%). Across the five management units the same comparison gives ecosystem-stock differences of 0.9-3.7\% (biomass 1.4-3.8\%, \ac{DOM} 0.9-6.2\%). In both implementations the \ac{DOM} stock grows slowly across the horizon while biomass rises quickly for the first decades and then flattens, and the same accumulation pattern appears in every unit.
+In the no-harvest scenario the landscape is left to grow: Table \ref{tab:No harvest emissions} compares the initial and final carbon stocks of the two implementations for TSA 24, and Figure \ref{fig: nh_stock} traces them over the horizon. The curve-based model and the reference libCBM simulation agree closely on stocks - period-mean absolute differences for TSA 24 of 0.75\% (ecosystem), 0.49\% (biomass) and 0.98\% (\ac{DOM}), and across the five units of 0.4-3.1\%, 0.2-0.5\% and 0.6-5.4\% respectively - with convergence by the final period (biomass within 1\% in every unit, ecosystem and \ac{DOM} within 1\% in four of five units; TSA 08, the unit with the largest residual, within 3.1\% and 4.0\%). In both implementations the \ac{DOM} stock grows slowly across the horizon while biomass rises quickly for the first decades and then flattens, and the same accumulation pattern appears in every unit.
 \begin{table}[h!]
     \centering
     \begin{tabular}{cccc>{\centering\arraybackslash}p{0.2\linewidth}}
          Carbon Stock $tC$&&   ws3&libcbm &Average difference (\%)\\
          \hline \hline
          \multirow{2}{*}{Total Ecosystem}&Start& 
-     $0.711 \times 10^{9}$&$0.702 \times 10^{9}$ & \multirow{2}{*}{2.50}\\
-  &End& $1.025 \times 10^{9}$&$1.020 \times 10^{9}$ &\\
+     $0.711 \times 10^{9}$&$0.706 \times 10^{9}$ & \multirow{2}{*}{0.75}\\
+  &End& $1.025 \times 10^{9}$&$1.024 \times 10^{9}$ &\\
   \hline
- \multirow{2}{*}{Biomass}& Start& $0.216 \times 10^{9}$&$0.192 \times 10^{9}$ &\multirow{2}{*}{3.84}\\
+ \multirow{2}{*}{Biomass}& Start& $0.216 \times 10^{9}$&$0.214 \times 10^{9}$ &\multirow{2}{*}{0.49}\\
  & End& $0.416 \times 10^{9}$&$0.419 \times 10^{9}$ &\\
  \hline
- \multirow{2}{*}{DOM}& Start& $0.495 \times 10^{9}$&$0.510 \times 10^{9}$ & \multirow{2}{*}{2.05}\\
- & End& $0.610 \times 10^{9}$&$0.601 \times 10^{9}$ &\\
+ \multirow{2}{*}{DOM}& Start& $0.495 \times 10^{9}$&$0.492 \times 10^{9}$ & \multirow{2}{*}{0.98}\\
+ & End& $0.610 \times 10^{9}$&$0.605 \times 10^{9}$ &\\
  \hline \hline
  \end{tabular}
     \caption{Starting, end and average difference of carbon (tC) in the ecosystem and its distribution between the biomass and \ac{DOM} stocks, compared between ws3 and libcbm under the no-harvest scenario (TSA 24; average = period-mean absolute percentage difference). }
@@ -493,20 +494,20 @@ In the no-harvest scenario the landscape is left to grow: Table \ref{tab:No harv
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=1\linewidth]{no_harvest_stock_total_greg.pdf}
+    \includegraphics[width=1\linewidth]{no_harvest_stocks.pdf}
     \caption{The total forest carbon stocks over the 200-year period under no-harvest scenario.}
     \label{fig: nh_stock}
 \end{figure}
-Figure \ref{fig: nh_emissions} shows the net emission flux of the no-harvest landscape. Net emissions are small residuals of much larger gross fluxes: on the curve side TSA 24 remains a sink of $0.4$-$3.3 \times 10^{6}$ tCO$_2$ per period throughout the horizon, while the reference simulation flips sign in a single early period. This is the expected cost of representing annual processes on a 10-year carbon curve - absolute differences are small relative to the gross fluxes that generate them, but their relative expression is large - and we therefore base the validation on stocks rather than fluxes (Section \ref{sec:discussion}).
+Figure \ref{fig: nh_emissions} shows the net emission flux of the no-harvest landscape. Net emissions are small residuals of much larger gross fluxes: every unit remains a net sink in both implementations - no sign flips - and the two series track each other in absolute terms, with period-mean absolute flux differences of $1.4$-$4.5 \times 10^{4}$ tC per period, or 0.01-0.02\% of each unit's initial ecosystem carbon. Relative differences stay within 8-11\% in the three units whose net fluxes remain well away from zero and are large only where the net flux itself passes nearest zero (below $10^{3}$ tC per period in TSAs 08 and 41); the stock trajectories remain the primary validation target, with these absolute flux residuals as the complementary check.
 
 \begin{figure}
     \centering
-    \includegraphics[width=1\linewidth,height=0.92\textheight,keepaspectratio]{emission_nh.pdf}
+    \includegraphics[width=1\linewidth]{no_harvest_emissions.pdf}
     \caption{Total forest carbon emissions over the 200-year period under the no-harvest scenario.}
     \label{fig: nh_emissions}
 \end{figure}
 
-The curve layer therefore reproduces the reference model's no-harvest stock dynamics within a few percent in every unit, with no systematic drift over the horizon (final-period differences in TSA 24 of 0.5\% ecosystem, 0.7\% biomass and 1.5\% \ac{DOM}). Together with the exact conservation of the reporting ledger and the optimization-identity checks, this is the validation basis for the results below.
+The curve layer therefore reproduces the reference model's no-harvest stock dynamics within a few percent in every unit, with no systematic drift over the horizon (final-period differences in TSA 24 of 0.1\% ecosystem, 0.7\% biomass and 0.8\% \ac{DOM}). Together with the exact conservation of the reporting ledger and the optimization-identity checks, this is the validation basis for the results below.
 
 \subsubsection{Harvested landscape}
 A cohort-exact harvested-landscape cross-validation against libCBM remains future work: the ws3-to-libCBM replay for managed stands is implemented with its conventions pinned, but the cohort-exact comparison still carries an unresolved residual, so we do not report a harvested-landscape stock or flux comparison here. A stand-level check of the harvest pathway is reported instead: across all 27 regeneration targets of the TSA 24 instance, a stand grown, clearcut and regrown through three rotations under the registered curves - as the optimizer evaluates them - tracks the direct libCBM multi-rotation simulation exactly in live biomass (to numerical precision) and within a few percent in dead organic matter and total ecosystem carbon, differences being largest in the first post-harvest rotation (mean absolute 3.7\% ecosystem, 4.9\% \ac{DOM}; worst type 10.6\%/12.2\%) and converging over later rotations (1.4\%/1.8\%; worst 3.2\%/3.6\%) - the convergence signature of the documented first-rotation-to-cycle convention rather than a scheduling artifact (record: \texttt{results/femic-tsa24/stand\_validation/}). The harvested-landscape carbon accounting is further anchored by the structural audits: the reported ledger telescopes exactly, and the optimization objective equals the reported system emission to solver precision (Section \ref{sec:discussion}).
@@ -548,7 +549,7 @@ Although our model and libcbm use similar inputs such as forest inventory, yield
 
 
 
-The comparisons between our model and libcbm support the corrected curve layer. In the no-harvest scenario the forest ecosystem functions as a persistent carbon sink in both implementations, and the stock trajectories agree closely in all five units - period-mean absolute differences of 0.9-3.7\% (ecosystem), 1.4-3.8\% (biomass) and 0.9-6.2\% (\ac{DOM}). The largest relative differences occur in the earliest periods, where the biomass denominators are smallest (up to 12.4\% in the second period of TSA 24), and by the final period biomass agrees to within about 1\% in every unit, ecosystem within about 1\% in four of five units (3.0\% in TSA 08) and \ac{DOM} within about 4\%. This close alignment confirms that the carbon yield curve method represents unmanaged landscape carbon dynamics at the accuracy required by the optimization; without harvesting, the two accounting implementations are effectively interchangeable for decision purposes.
+The comparisons between our model and libcbm support the corrected curve layer. In the no-harvest scenario the forest ecosystem functions as a persistent carbon sink in both implementations, and the stock trajectories agree closely in all five units - period-mean absolute differences of 0.4-3.1\% (ecosystem), 0.2-0.5\% (biomass) and 0.6-5.4\% (\ac{DOM}), within 1\% on every layer in four of the five units - and by the final period biomass agrees to within 1\% in every unit, ecosystem and \ac{DOM} within 1\% in four of five units (3.1\% and 4.0\% in TSA 08). This close alignment confirms that the carbon yield curve method represents unmanaged landscape carbon dynamics at the accuracy required by the optimization; without harvesting, the two accounting implementations are effectively interchangeable for decision purposes.
 
 Under active harvest, no corrected cross-implementation comparison is reported: the cohort-exact ws3-to-libCBM bridge for managed stands still carries an open age-offset issue, so a harvested-landscape validation is listed as future work rather than approximated with pre-correction numbers. For optimization, the decisive safeguards are structural rather than comparative: the reported emission ledger telescopes exactly, successive stock differences cancel, and the optimization objective and the reported system emission are computed from the same accounting, an identity verified to solver precision in the regression suite (an independent audit additionally re-solved four committed grid scenarios end to end with exact agreement).
 
